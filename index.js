@@ -42,6 +42,11 @@ function start () {
         addr: 'wss://play.webmc.fun',
         name: '§b§lWebMC§r',
         hideAddr: true
+      },
+      {
+        addr: 'java://java.webmc.fun',
+        name: '§b§lWebMC§r §8[JAVA]§r',
+        hideAddr: true
       }
     ],
     assetsURI: [ { url: 'game/assets.epw' } ]
