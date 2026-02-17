@@ -24,7 +24,7 @@ window.eaglercraftXOpts = {
   ],
   assetsURI: [ { url: 'game/assets.epw' } ],
   optionsTXT: {
-    fov: '0.25',
+    // fov: '0.25',
     enableFNAWSkins: false,
     snooperEnabled: false
   }
