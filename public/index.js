@@ -1,5 +1,6 @@
 const currentResentVersion = 510;
 const currentResentStoreVersion = 501;
+let flag = false;
 
 window.eaglercraftXOpts = {
   allowUpdateSvc: false,
@@ -29,6 +30,16 @@ window.eaglercraftXOpts = {
         await s();
       }
     },
+    localStorageLoaded: (k) => {
+      if (k === '_eaglercraftX.ResentLatestBuild') {
+        canvas().style.visibility = 'visible';
+        loader.canvas.style.opacity = '0';
+        window.removeEventListener('resize', loader.redraw);
+        setTimeout(() => {
+          loader.canvas.remove();
+        }, 300);
+      }
+    }
   },
   optionsTXT: {
     // fov: '0.25',
@@ -51,6 +62,11 @@ window.ResentLoadScreen = {
   hasDestroyed: () => { return true; }
 }
 
+const loader = {
+  canvas: null,
+  redraw: null
+}
+
 window.open = new Proxy(window.open, {
   apply (a, b, c) {
     let url = c[0].trim();
@@ -64,7 +80,20 @@ window.open = new Proxy(window.open, {
   }
 });
 
+CanvasRenderingContext2D.prototype.drawImage = new Proxy(CanvasRenderingContext2D.prototype.drawImage, {
+  apply(a, b, c) {
+    if (c[3] === 1920 && c[4] === 1080 && !flag) {
+      canvas().style.visibility = 'hidden';
+      loader.canvas.style.visibility = 'visible';
+      flag = true;
+    } else {
+      return Reflect.apply(a, b, c);
+    }
+  }
+});
+
 async function start () {
+  loader.canvas = document.querySelector('.loader');
   const ver = await gzipC(JSON.stringify({ 'lastUpdated': Date.now(), 'integer': currentResentVersion }));
   localStorage.setItem('_eaglercraftX.ResentLatestBuild', ver);
   let g = localStorage.getItem('_eaglercraftX.g');
@@ -79,10 +108,20 @@ async function start () {
   }
   localStorage.setItem('_eaglercraftX.g', await gzipC(g));
   await s();
+  const img = new Image();
+  img.src = 'loader.png';
+  img.onload = () => {
+    loader.redraw = () => draw(img, loader.canvas);
+    loader.redraw();
+    window.addEventListener('resize', loader.redraw);
+  }
+  document.addEventListener('contextmenu', (ev) => {
+    ev.preventDefault();
+  });
   main();
 }
 
-async function s() {
+async function s () {
   await writeServers(['_eaglercraftX.s']);
 }
 
@@ -112,4 +151,47 @@ async function gzipD (txt) {
   writer.close();
   const ret = await new Response(stream.readable).arrayBuffer();
   return new TextDecoder().decode(ret);
+}
+
+function canvas () {
+  return document.querySelector('._eaglercraftX_wrapper_element');
+}
+
+function draw(img, canvas) {
+  const ctx = canvas.getContext("2d");
+
+  const dpr = devicePixelRatio || 1;
+
+  const cssW = canvas.clientWidth || innerWidth;
+  const cssH = canvas.clientHeight || innerHeight;
+
+  canvas.width = Math.max(1, Math.floor(cssW * dpr));
+  canvas.height = Math.max(1, Math.floor(cssH * dpr));
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.imageSmoothingEnabled = false;
+
+  const w = cssW;
+  const h = cssH;
+
+  const s = Math.min(w, h);
+  const x = (w - s) / 2;
+  const y = (h - s) / 2;
+
+  ctx.clearRect(0, 0, w, h);
+
+  ctx.drawImage(img, 0, 0, img.width, img.height, x, y, s, s);
+
+  if (x > 0) {
+    ctx.drawImage(img, 0, 0, 1, img.height, 0, 0, x, h);
+  }
+  if (w - x - s > 0) {
+    ctx.drawImage(img, img.width - 1, 0, 1, img.height, x + s, 0, w - x - s, h);
+  }
+  if (y > 0) {
+    ctx.drawImage(img, 0, 0, img.width, 1, x, 0, s, y);
+  }
+  if (h - y - s > 0) {
+    ctx.drawImage(img, 0, img.height - 1, img.width, 1, x, y + s, s, h - y - s);
+  }
 }
