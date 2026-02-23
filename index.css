@@ -1,28 +1,23 @@
 * {
+  margin: 0 !important;
+  padding: 0 !important;
   border: none !important;
   outline: none !important;
+  cursor: default !important;
+  overflow: hidden !important;
 }
 
 body {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
   background-color: #000 !important;
   text-align: center !important;
-  cursor: default !important;
   font-family: Arial, sans-serif !important;
 }
 
-body ._eaglercraftX_canvas_element, body ._webmc_resent_freeze_fix_canvas_div_, body ._webmc_resent_freeze_fix_canvas_div_::part(_webmc_resent_freeze_fix_canvas_element_) {
+body, #game_frame {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
@@ -30,9 +25,22 @@ body ._eaglercraftX_canvas_element, body ._webmc_resent_freeze_fix_canvas_div_, 
   height: 100vh !important;
 }
 
-body ._webmc_resent_freeze_fix_canvas_div_, body ._webmc_resent_freeze_fix_canvas_div_::part(_webmc_resent_freeze_fix_canvas_element_) {
+body ._eaglercraftX_canvas_element, body .loader {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+}
+
+body ._eaglercraftX_canvas_element {
+  z-index: 1 !important;
+}
+
+body .loader {
   z-index: 2 !important;
   pointer-events: none !important;
+  transition: 0.3s opacity ease-in-out;
 }
 
 body ._eaglercraftX_crash_element {
