@@ -1,6 +1,7 @@
 const currentResentVersion = 510;
 const currentResentStoreVersion = 501;
-let flag = false;
+let flag1 = false;
+let flag2 = false;
 
 window.eaglercraftXOpts = {
   allowUpdateSvc: false,
@@ -25,19 +26,20 @@ window.eaglercraftXOpts = {
   ],
   assetsURI: [ { url: 'game/assets.epw' } ],
   hooks: {
-    localStorageSaved: async (k, d) => {
-      if (k === 's') {
+    localStorageSaved: async (key, data) => {
+      if (key === 's') {
         await s();
       }
     },
-    localStorageLoaded: (k) => {
-      if (k === '_eaglercraftX.ResentLatestBuild') {
+    screenChanged: (screen, scaledWidth, scaledHeight, realWidth, realHeight, scaleFactor) => {
+      if (!flag2 && screen.startsWith('com.resentclient.client.')) {
         canvas().style.visibility = 'visible';
         loader.canvas.style.opacity = '0';
         window.removeEventListener('resize', loader.redraw);
         setTimeout(() => {
           loader.canvas.remove();
         }, 300);
+        flag2 = true;
       }
     }
   },
@@ -82,10 +84,10 @@ window.open = new Proxy(window.open, {
 
 CanvasRenderingContext2D.prototype.drawImage = new Proxy(CanvasRenderingContext2D.prototype.drawImage, {
   apply(a, b, c) {
-    if (c[3] === 1920 && c[4] === 1080 && !flag) {
+    if (!flag1 && c[3] === 1920 && c[4] === 1080) {
       canvas().style.visibility = 'hidden';
       loader.canvas.style.visibility = 'visible';
-      flag = true;
+      flag1 = true;
     } else {
       return Reflect.apply(a, b, c);
     }
