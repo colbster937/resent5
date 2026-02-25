@@ -15,12 +15,12 @@ window.eaglercraftXOpts = {
   servers: [
     {
       addr: 'wss://play.webmc.fun',
-      name: '§b§lWebMC§r',
+      name: '\u00A7b\u00A7lWebMC\u00A7r',
       hideAddr: true
     },
     {
       addr: 'java://java.webmc.fun',
-      name: '§b§lWebMC§r §8[JAVA]§r',
+      name: '\u00A7b\u00A7lWebMC\u00A7r \u00A78[JAVA]\u00A7r',
       hideAddr: true
     }
   ],
