@@ -27,6 +27,6 @@ jobs:
           git add --all
           git commit -m "$COMMIT_MSG" || true
           git push -u --force https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git dist
-          git push -u --force https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.github.io.git main
+          git push -u --force https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository_owner }}/${{ github.repository_owner }}.github.io.git dist:main
         env:
           COMMIT_MSG: "${{ github.event.head_commit.message || 'chore: update client' }}"
