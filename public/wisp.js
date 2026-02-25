@@ -1,4 +1,4 @@
-const ERROR_MESSAGE = '§cWisp Proxy is not enabled!'
+const ERROR_MESSAGE = '\u00A7cWisp Proxy is not enabled!'
 
 class WispWebSocket extends EventTarget {
   readyState;
