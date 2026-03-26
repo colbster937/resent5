@@ -9,7 +9,7 @@ window.eaglercraftXOpts = {
   allowUpdateDL: false,
   allowFNAWSkins: false,
   allowBootMenu: false,
-  allowServerRedirects: false,
+  allowServerRedirects: true,
   checkRelaysForUpdates: false,
   enableMinceraft: false,
   container: 'game_frame',
