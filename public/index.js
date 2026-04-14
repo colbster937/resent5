@@ -3,6 +3,7 @@ const currentResentStoreVersion = 501;
 
 let flag1 = false;
 let flag2 = false;
+let instance = null;
 
 window.eaglercraftXOpts = {
   allowUpdateSvc: false,
@@ -104,7 +105,27 @@ Worker.prototype.postMessage = new Proxy(Worker.prototype.postMessage, {
   }
 });
 
+window.WebAssembly = new Proxy(window.WebAssembly, {
+  get(a, b) {
+    if (b === 'instantiateStreaming') {
+      return async (...c) => {
+        const d = await a.instantiateStreaming(...c);
+        instance = d.instance;
+        return d;
+      };
+    }
+    return a[b];
+  }
+});
+
 async function start () {
+  const title = (document.title += ` ${vers(currentResentVersion)}`);
+  Object.defineProperty(document, 'title', {
+    get() {
+      return title;
+    },
+    set(v) {}
+  });
   loader.canvas = document.querySelector('.loader');
   const ver = await gzipC(JSON.stringify({ 'lastUpdated': Date.now(), 'integer': currentResentVersion }));
   localStorage.setItem('_eaglercraftX.ResentLatestBuild', ver);
@@ -169,7 +190,7 @@ function canvas () {
   return document.querySelector('._eaglercraftX_wrapper_element');
 }
 
-function draw(img, canvas) {
+function draw (img, canvas) {
   const ctx = canvas.getContext("2d");
 
   const dpr = devicePixelRatio || 1;
@@ -206,4 +227,12 @@ function draw(img, canvas) {
   if (h - y - s > 0) {
     ctx.drawImage(img, 0, img.height - 1, img.width, 1, x, y + s, s, h - y - s);
   }
+}
+
+function vers (n) {
+  const str = String(n).padStart(3, '0');
+  const major = str[0];
+  const minor = str[1];
+  const patch = str[2];
+  return patch === '0' ? `v${major}.${minor}` : `v${major}.${minor}p${patch}`;
 }
