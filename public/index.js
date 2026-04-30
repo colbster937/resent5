@@ -48,7 +48,8 @@ window.eaglercraftXOpts = {
   optionsTXT: {
     // fov: '0.25',
     enableFNAWSkins: false,
-    snooperEnabled: false
+    snooperEnabled: false,
+    autoJump: false
   }
 }
 
