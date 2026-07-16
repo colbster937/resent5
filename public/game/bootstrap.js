@@ -1,3 +1,4 @@
+
 "use strict";
 if(typeof window !== "undefined") window.eaglercraftXClientScriptElement = document.currentScript;
 (function(){'use strict';function g(a){console.log("LoaderBootstrap: [INFO] "+a)}function n(a){console.log("LoaderBootstrap: [WARN] "+a)}function q(a){console.error("LoaderBootstrap: [ERROR] "+a)}var r=null;
@@ -14,3 +15,4 @@ b.appendChild(a);await v();c.startsWith("data:")?(g('Downloading EPW file "<data
 h,k);m=new Uint8Array(c,m,p);l=URL.createObjectURL(new Blob([h],{type:l.decode(m)}));await w(l);g("Loaded splash img: "+l);a.style.background='center / contain no-repeat url("'+l+'"), 0px 0px / 1000000% 1000000% no-repeat url("'+l+'") white';await v();p=e.getUint32(164,!0);h=e.getUint32(168,!0);m=e.getUint32(180,!0);e=e.getUint32(184,!0);if(0>p||p+h>f||0>m||m+e>f)q("The EPW file contains an invalid offset (component: loader)"),d=!0;if(d)b.removeChild(a),z(b,"EPW file is invalid!"),q("EPW file is invalid!");
 else{window.ResentLoadScreen.setDecompressStep.call(null,2);a=new Uint8Array(c,p,h);a=URL.createObjectURL(new Blob([a],{type:"text/javascript;charset=utf-8"}));g("Loaded loader.js: "+l);d=new Uint8Array(c,m,e);d=URL.createObjectURL(new Blob([d],{type:"application/wasm"}));g("Loaded loader.wasm: "+d);window.ResentLoadScreen.setDecompressStep.call(null,3);f={};for(const [t,A]of Object.entries(window.eaglercraftXOpts))"container"!==t&&"assetsURI"!==t&&(f[t]=A);window.__eaglercraftXLoaderContextPre={rootElement:b,
 eaglercraftXOpts:f,theEPWFileBuffer:c,loaderWASMURL:d,splashURL:l};g("Appending loader.js to document...");b=document.createElement("script");b.type="text/javascript";b.src=a;document.head.appendChild(b);window.ResentLoadScreen.decompressProgressUpdate.call(null,1)}}}}}else b='window.eaglercraftXOpts.container "'+a+'" is not a known element id!',q(b),alert(b)}}};}).call(this);
+
